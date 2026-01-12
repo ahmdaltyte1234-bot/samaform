@@ -12,10 +12,10 @@ const Footer = () => {
           {/* Logo */}
           <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-              <span className="text-accent-foreground font-bold text-xl">D</span>
+              <span className="text-accent-foreground font-bold text-xl">S</span>
             </div>
             <span className={`font-semibold text-lg ${isRTL ? 'font-arabic' : ''}`}>
-              {isRTL ? 'ديزاين برو' : 'DesignPro'}
+              Sama Form
             </span>
           </div>
 
@@ -31,7 +31,7 @@ const Footer = () => {
 
           {/* Copyright */}
           <p className={`text-sm text-primary-foreground/70 ${isRTL ? 'font-arabic' : ''}`}>
-            © {currentYear} DesignPro. {t('footer.rights')}.
+            © {currentYear} Sama Form. {t('footer.rights')}.
           </p>
         </div>
       </div>
