@@ -10,6 +10,7 @@ import ProgressBar from '@/components/registration/ProgressBar';
 import StepOne from '@/components/registration/StepOne';
 import StepTwo from '@/components/registration/StepTwo';
 import StepThree from '@/components/registration/StepThree';
+import StepQuestionnaire from '@/components/registration/StepQuestionnaire';
 import StepFour from '@/components/registration/StepFour';
 import { useToast } from '@/hooks/use-toast';
 
@@ -17,6 +18,7 @@ const steps = [
   { title: 'Basic Info', titleAr: 'المعلومات الأساسية' },
   { title: 'Project Type', titleAr: 'نوع المشروع' },
   { title: 'Details', titleAr: 'التفاصيل' },
+  { title: 'Questions', titleAr: 'الأسئلة' },
   { title: 'Images', titleAr: 'الصور' },
 ];
 
@@ -33,7 +35,9 @@ interface FormData {
   budget: string;
   timeline: string;
   additionalNotes: string;
-  // Step 4
+  // Step 4 - Questionnaire
+  questionnaireAnswers: Record<string, string | string[]>;
+  // Step 5
   inspirationImages: File[];
   currentSpacePhotos: File[];
 }
@@ -48,6 +52,7 @@ const initialFormData: FormData = {
   budget: '',
   timeline: '',
   additionalNotes: '',
+  questionnaireAnswers: {},
   inspirationImages: [],
   currentSpacePhotos: [],
 };
@@ -134,12 +139,15 @@ const Register = () => {
         isValid = validateStep3();
         break;
       case 4:
+        isValid = true; // Questionnaire answers are optional but encouraged
+        break;
+      case 5:
         isValid = true; // Images are optional
         break;
     }
 
     if (isValid) {
-      if (currentStep < 4) {
+      if (currentStep < 5) {
         setCurrentStep(currentStep + 1);
         setErrors({});
       } else {
@@ -183,7 +191,11 @@ const Register = () => {
     setFormData({ ...formData, ...data });
   };
 
-  const updateStepFourData = (data: Pick<FormData, 'inspirationImages' | 'currentSpacePhotos'>) => {
+  const updateQuestionnaireData = (data: { answers: Record<string, string | string[]> }) => {
+    setFormData({ ...formData, questionnaireAnswers: data.answers });
+  };
+
+  const updateStepFiveData = (data: Pick<FormData, 'inspirationImages' | 'currentSpacePhotos'>) => {
     setFormData({ ...formData, ...data });
   };
 
@@ -196,7 +208,7 @@ const Register = () => {
           {/* Progress Bar */}
           <ProgressBar
             currentStep={currentStep}
-            totalSteps={4}
+            totalSteps={5}
             steps={steps}
           />
 
@@ -238,12 +250,20 @@ const Register = () => {
             )}
 
             {currentStep === 4 && (
+              <StepQuestionnaire
+                projectType={formData.projectType}
+                data={{ answers: formData.questionnaireAnswers }}
+                onChange={updateQuestionnaireData}
+              />
+            )}
+
+            {currentStep === 5 && (
               <StepFour
                 data={{
                   inspirationImages: formData.inspirationImages,
                   currentSpacePhotos: formData.currentSpacePhotos,
                 }}
-                onChange={updateStepFourData}
+                onChange={updateStepFiveData}
               />
             )}
 
@@ -276,7 +296,7 @@ const Register = () => {
                 ) : (
                   <>
                     <span className={isRTL ? 'font-arabic' : ''}>
-                      {currentStep === 4
+                      {currentStep === 5
                         ? isRTL ? 'إرسال' : 'Submit'
                         : isRTL ? 'التالي' : 'Next'}
                     </span>
