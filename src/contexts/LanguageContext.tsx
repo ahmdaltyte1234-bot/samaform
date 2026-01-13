@@ -53,6 +53,16 @@ const translations = {
     'footer.rights': 'All rights reserved',
     'footer.privacy': 'Privacy Policy',
     'footer.terms': 'Terms of Service',
+
+    // Form
+    'form.fullName': 'Full Name',
+    'form.fullNamePlaceholder': 'Enter your full name',
+    'form.email': 'Email',
+    'form.emailPlaceholder': 'Enter your email',
+    'form.phone': 'Phone Number',
+    'form.phonePlaceholder': 'Enter your phone number',
+    'form.city': 'City',
+    'form.cityPlaceholder': 'Enter your city',
   },
   ar: {
     // Navigation
