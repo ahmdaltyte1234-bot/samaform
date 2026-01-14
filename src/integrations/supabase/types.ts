@@ -14,7 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      submissions: {
+        Row: {
+          additional_notes: string | null
+          area_size: string | null
+          budget: string | null
+          city: string
+          created_at: string
+          current_space_images: string[] | null
+          email: string
+          full_name: string
+          id: string
+          inspiration_images: string[] | null
+          phone: string
+          project_type: string
+          questionnaire_answers: Json | null
+          status: string
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          area_size?: string | null
+          budget?: string | null
+          city: string
+          created_at?: string
+          current_space_images?: string[] | null
+          email: string
+          full_name: string
+          id?: string
+          inspiration_images?: string[] | null
+          phone: string
+          project_type: string
+          questionnaire_answers?: Json | null
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          additional_notes?: string | null
+          area_size?: string | null
+          budget?: string | null
+          city?: string
+          created_at?: string
+          current_space_images?: string[] | null
+          email?: string
+          full_name?: string
+          id?: string
+          inspiration_images?: string[] | null
+          phone?: string
+          project_type?: string
+          questionnaire_answers?: Json | null
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
