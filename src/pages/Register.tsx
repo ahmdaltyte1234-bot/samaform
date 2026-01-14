@@ -13,7 +13,7 @@ import StepThree from '@/components/registration/StepThree';
 import StepQuestionnaire from '@/components/registration/StepQuestionnaire';
 import StepFour from '@/components/registration/StepFour';
 import { useToast } from '@/hooks/use-toast';
-
+import { supabase } from '@/integrations/supabase/client';
 const steps = [
   { title: 'Basic Info', titleAr: 'المعلومات الأساسية' },
   { title: 'Project Type', titleAr: 'نوع المشروع' },
@@ -166,17 +166,38 @@ const Register = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
-    // Simulate API call - will be replaced with actual backend call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    toast({
-      title: isRTL ? 'تم إرسال طلبك بنجاح!' : 'Your request has been submitted!',
-      description: isRTL ? 'سنتواصل معك خلال 24 ساعة' : "We'll contact you within 24 hours",
-    });
+    try {
+      const { error } = await supabase.from('submissions').insert({
+        full_name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        city: formData.city,
+        project_type: formData.projectType,
+        area_size: formData.areaSize || null,
+        budget: formData.budget || null,
+        timeline: formData.timeline || null,
+        additional_notes: formData.additionalNotes || null,
+        questionnaire_answers: formData.questionnaireAnswers,
+        // Note: Images would need storage bucket integration for production
+      });
 
-    // Navigate to confirmation page or back to home
-    navigate('/');
-    setIsSubmitting(false);
+      if (error) throw error;
+
+      toast({
+        title: isRTL ? 'تم إرسال طلبك بنجاح!' : 'Your request has been submitted!',
+        description: isRTL ? 'سنتواصل معك خلال 24 ساعة' : "We'll contact you within 24 hours",
+      });
+
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        title: isRTL ? 'حدث خطأ' : 'Submission failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const updateStepOneData = (data: Pick<FormData, 'fullName' | 'email' | 'phone' | 'city'>) => {
